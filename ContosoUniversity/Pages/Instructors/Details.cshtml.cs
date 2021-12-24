@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -23,14 +19,14 @@ namespace ContosoUniversity.Pages.Instructors
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null)
+            if (id is null)
             {
                 return NotFound();
             }
 
             Instructor = await _context.Instructors.FirstOrDefaultAsync(m => m.Id == id);
 
-            if (Instructor == null)
+            if (Instructor is null)
             {
                 return NotFound();
             }

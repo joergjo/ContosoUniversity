@@ -19,7 +19,7 @@ namespace ContosoUniversity.Pages.Courses
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null)
+            if (id is null)
             {
                 return NotFound();
             }
@@ -27,7 +27,7 @@ namespace ContosoUniversity.Pages.Courses
             Course = await _context.Courses
                 .Include(c => c.Department).FirstOrDefaultAsync(m => m.Id == id);
 
-            if (Course == null)
+            if (Course is null)
             {
                 return NotFound();
             }

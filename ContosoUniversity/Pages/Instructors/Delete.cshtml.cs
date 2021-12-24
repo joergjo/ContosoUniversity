@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -19,40 +15,45 @@ namespace ContosoUniversity.Pages.Instructors
             _context = context;
         }
 
-        [BindProperty]
         public Instructor Instructor { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null)
+            if (id is null)
             {
                 return NotFound();
             }
 
             Instructor = await _context.Instructors.FirstOrDefaultAsync(m => m.Id == id);
 
-            if (Instructor == null)
+            if (Instructor is null)
             {
                 return NotFound();
             }
+
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(int? id)
         {
-            if (id == null)
+            if (id is null)
             {
                 return NotFound();
             }
 
-            Instructor = await _context.Instructors.FindAsync(id);
+            var instructor = await _context.Instructors.Include(i => i.Courses).SingleOrDefaultAsync(i => i.Id == id);
 
-            if (Instructor != null)
+            if (instructor is null)
             {
-                _context.Instructors.Remove(Instructor);
-                await _context.SaveChangesAsync();
+                return RedirectToPage("./Index");
             }
 
+            var departments = await _context.Departments
+                .Where(d => d.InstructorId == id)
+                .ToListAsync();
+            departments.ForEach(d => d.InstructorId = null);
+            _context.Instructors.Remove(instructor);
+            await _context.SaveChangesAsync();
             return RedirectToPage("./Index");
         }
     }

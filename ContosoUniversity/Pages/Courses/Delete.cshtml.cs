@@ -15,40 +15,44 @@ namespace ContosoUniversity.Pages.Courses
             _context = context;
         }
 
-        [BindProperty]
         public Course Course { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null)
+            if (id is null)
             {
                 return NotFound();
             }
 
             Course = await _context.Courses
-                .Include(c => c.Department).FirstOrDefaultAsync(m => m.Id == id);
+                .AsNoTracking()
+                .Include(c => c.Department)
+                .FirstOrDefaultAsync(m => m.Id == id);
 
-            if (Course == null)
+            if (Course is null)
             {
                 return NotFound();
             }
+
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(int? id)
         {
-            if (id == null)
+            if (id is null)
             {
                 return NotFound();
             }
 
             Course = await _context.Courses.FindAsync(id);
 
-            if (Course != null)
+            if (Course is null)
             {
-                _context.Courses.Remove(Course);
-                await _context.SaveChangesAsync();
+                return RedirectToPage("./Index");
             }
+
+            _context.Courses.Remove(Course);
+            await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
         }
