@@ -15,7 +15,15 @@ var maxModelBindingCollectionSize = Convert.ToInt32(builder.Configuration["MaxMo
 builder.Services.Configure<MvcOptions>(options =>
     options.MaxModelBindingCollectionSize = maxModelBindingCollectionSize);
 
+// Force en-US for a consistent culture.
+var supportedCultures = new[] { "en-US" };
+var localizationOptions = new RequestLocalizationOptions().SetDefaultCulture(supportedCultures[0])
+    .AddSupportedCultures(supportedCultures)
+    .AddSupportedUICultures(supportedCultures);
+
+
 var app = builder.Build();
+app.UseRequestLocalization(localizationOptions);
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

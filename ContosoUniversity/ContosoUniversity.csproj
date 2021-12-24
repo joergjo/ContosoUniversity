@@ -21,6 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Pages\Departments" />
       <Folder Include="Pages\Students" />
     </ItemGroup>
 

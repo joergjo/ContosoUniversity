@@ -9,7 +9,7 @@ public class InstructorCoursesPageModel : PageModel
 {
     public List<AssignedCourseData> AssignedCourseDataList { get; set; } = new();
 
-    public void PopulateAssignedCourseData(SchoolContext context, Instructor instructor)
+    protected void PopulateAssignedCourseData(SchoolContext context, Instructor instructor)
     {
         var allCourses = context.Courses;
         var instructorCourses = new HashSet<int>(instructor.Courses.Select(c => c.Id));

@@ -12,7 +12,7 @@ public class Department
     
     [DataType((DataType.Currency))]
     [Column(TypeName = "money")]
-    public Decimal Budget { get; set; }
+    public decimal Budget { get; set; }
     
     [DataType(DataType.Date)]
     [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
@@ -20,6 +20,7 @@ public class Department
     public DateTime StartDate { get; set; }
 
     public int? InstructorId { get; set; }
+    public Guid ConcurrencyToken { get; set; } = Guid.NewGuid();
 
     public Instructor Administrator { get; set; }
     public ICollection<Course> Courses { get; set; }
