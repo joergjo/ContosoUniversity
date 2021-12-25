@@ -54,7 +54,7 @@ namespace ContosoUniversity.Pages.Departments
                 }
                 return RedirectToPage("./Index");
             }
-            catch (DbUpdateConcurrencyException ex)
+            catch (DbUpdateConcurrencyException)
             {
                 return RedirectToPage("./Delete",
                     new { id, concurrencyError = true });
